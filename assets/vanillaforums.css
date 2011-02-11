@@ -1,0 +1,100 @@
+#adminmenu #toplevel_page_vf-admin-handle div.wp-menu-image {
+	background: url("vanilla-sprite.png") no-repeat scroll -1px -33px transparent;
+}
+#adminmenu #toplevel_page_vf-admin-handle:hover div.wp-menu-image,
+#adminmenu #toplevel_page_vf-admin-handle.wp-has-current-submenu div.wp-menu-image {
+	background: url("vanilla-sprite.png") no-repeat scroll -1px -1px transparent;
+}
+form strong {
+	display: block;
+	padding-top: 10px;
+}
+#edit-slug-box {
+	font-size: 11px;
+	padding: 8px;
+	margin: 0;
+	height: auto;
+	background: #fff;
+	border: 1px inset #888;
+	display: inline-block;
+	min-width: 384px;
+}
+#edit-slug-box strong {
+	display: none;
+	font-size: 12px;
+	color: #333;
+}
+#editable-post-name input {
+	width: 120px;
+}
+form em {
+    display: block;
+    color: #555;
+    font-size: 11px;
+}
+textarea,
+textarea:focus {
+    font-family: monospace;
+    color: #000;
+    height: 50px;
+    width: 400px;
+    font-size: 12px;
+    line-height: 13px;
+    padding: 2px;
+    border-radius: 0;
+    -moz-border-radius: 0;
+    -webkit-border-radius: 0;
+    border: 1px inset #888;
+	 display: block;
+}
+input.InputBox,
+input.InputBox:focus {
+   width: 400px;
+}
+.GetVanilla {
+	padding: 10px 0 26px;
+}
+.GetVanilla h2 {
+	margin: 0;
+	padding: 0 0 16px;
+}
+.GetVanilla a {
+   margin: 0;
+	box-shadow: 0px 0px 2px #999;
+	-moz-box-shadow: 0px 0px 2px #999;
+	-webkit-box-shadow: 0px 0px 2px #999;  
+   border-radius: 4px;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+	background:url("bg-button-blue.png") repeat-x scroll left top transparent;
+	border:1px solid #0F7FE6;
+	color:#003673;
+	cursor:pointer;
+	font-size:12px;
+	font-weight:bold;
+	padding:6px 10px 6px 6px;
+	text-decoration:none;
+	text-shadow:0 1px 0 #B7F5FD;
+}
+.GetVanilla a span {
+	padding-left: 20px;
+	background: url('logo.png') no-repeat 0 0;
+}
+.GetVanilla a:hover {
+	border: 1px solid #0B64C6;
+	color: #001F44;
+	text-shadow:0 1px 0 #EEFFFF;
+}
+.GetVanilla a:focus {
+	background: #81CFF6;
+	border:1px solid #0B64C6;
+	color:#001F44;
+	text-shadow:0 1px 0 #EEFFFF;
+}
+
+
+
+
+I know what your thinking Ñ enough already with the technical stuff, I just want to know how to design my own theme! Ñ Well, I agree! Now that we know where everything is located, we have looked at the basic anatomy of a theme, and how all the theme files work together, we can start the design process.
+
+Now that we understand the basic anatomy of a theme and how all the theme files work together, we can start the design process.
