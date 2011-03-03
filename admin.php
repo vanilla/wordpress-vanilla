@@ -13,7 +13,7 @@ function vf_admin_init() {
 	 // This will add /wp-content/plugins/vanillaforums/assets/vanillaforums.js to the current page
 	 wp_enqueue_script(
 		'vanillaforums',
-		plugins_url('/VanillaForums/assets/vanillaforums.js'),
+		plugins_url('/assets/vanillaforums.js', __FILE__),
 		array('jquery'),
 		'1.0'
 	 );
@@ -21,11 +21,18 @@ function vf_admin_init() {
 	 // This will add /wp-content/plugins/vanillaforums/assets/vanillaforums.css to the current page
 	 wp_enqueue_style(
 		'vanillaforums',
-		plugins_url('/VanillaForums/assets/vanillaforums.css'),
+		plugins_url('/assets/vanillaforums.css', __FILE__),
 		array(),
-		'1.0'
+		'1.2'
 	 );
   }
+  // This will add /wp-content/plugins/vanillaforums/assets/admin.css to the all admin pages
+  wp_enqueue_style(
+	 'vanillaforumsadmin',
+	 plugins_url('/assets/admin.css', __FILE__),
+	 array(),
+	 '1.1'
+  );
 }
 
 function vf_add_vanilla_menu() {
