@@ -15,14 +15,23 @@ function vf_embed_admin_page() {
   $options = get_option(VF_OPTIONS_NAME);
   $embed_code = vf_get_value('embed-code', $options);
   $embed_widgets = vf_get_value('embed-widgets', $options);
+  $vanilla_url = vf_get_value('url', $options);
   $vanilla_post = get_post($PostID);
 ?>
+<script type="text/javascript">
+jQuery(document).ready(function($) {
+  $('.reset-embed-code').click(function() {
+	 $('#EmbedCode').val('<script type="text/javascript" src="<?php echo vf_combine_paths(array($vanilla_url, 'js/embed.js'), '/'); ?>"></scrip'+'t>');
+	 return false;
+  });
+});
+</script>
 <div class="wrap">
    <div id="icon-options-general" class="icon32"><br /></div>
-   <h2><?php _e('&lt;Embed&gt; Vanilla'); ?></h2>
-   <p>Use this page to embed your Vanilla Forum into WordPress.</p>
+   <h2><?php _e('Forum Integration'); ?></h2>
+   <p>Use this page to embed your entire Vanilla Forum into a WordPress page.</p>
 	<?php vf_open_form('embed-form'); ?>
-		<strong>Forum Location in WordPress</strong>
+		<strong>Forum Page in WordPress</strong>
 		<em>Define where to access your Vanilla Forum within WordPress.</em>
 		<div id="edit-slug-box"><?php echo get_sample_permalink_html($post_id); ?></div>
 		<?php wp_nonce_field( 'samplepermalink', 'samplepermalinknonce', false ); ?>
@@ -32,13 +41,13 @@ function vf_embed_admin_page() {
 		<p>
 			<label>
 				<input type="checkbox" name="<?php echo vf_get_option_name('embed-widgets'); ?>" value="1"<?php echo $embed_widgets == '1' ? ' checked="checked"' : ''; ?> />
-				Force your widgets to link to the embedded version of your forum instead of going to the actual forum url.
+				Force links in your <a href="./admin.php?page=vf-widgets-handle">widgets</a> to go to your forum page in WordPress (defined above) instead of going to the actual forum url (<?php echo $vanilla_url; ?>).
 			</label>
 		</p>
 
 		<strong>Forum &lt;Embed&gt; Code</strong>
 		<textarea id="EmbedCode" name="<?php echo vf_get_option_name('embed-code'); ?>"><?php echo $embed_code; ?></textarea>
-		<em>You can make changes to your forum embed code here (optional).</em>
+		<em>You can make changes to your forum embed code here (optional). <a class="reset-embed-code" href="#">Reset embed code</a>.</em>
       <p class="submit"><input type="submit" name="save" value="<?php _e('Save Changes'); ?>" /></p>
 		</div>
    </form>
@@ -99,3 +108,104 @@ function vf_embed_edit_slug() {
 	die(get_sample_permalink_html($post_id, 'Discussion Forum', $slug));
 }
 
+
+/** ----=====---- EMBED COMMENTS ----=====---- **/
+
+/**
+ * Vanilla Comments administration page.
+ */
+function vf_comment_admin_page() {
+  // Check that the user has the required capability 
+  if (!current_user_can('manage_options'))
+	 wp_die(__('You do not have sufficient permissions to access this page.'));
+  
+  $options = get_option(VF_OPTIONS_NAME);
+  $embed_comments = vf_get_value('embed-comments', $options);
+  
+  $resturl = vf_get_value('url', $options, '');
+  $resturl = vf_combine_paths(array($resturl, '?p=categories/all.json'), '/');
+  $categoryid = vf_get_value('embed-categoryid', $options, '0');
+  $category_data = json_decode(vf_rest($resturl));
+  $select_options = vf_get_select_option('No Category', '0', $categoryid);
+  if (is_object($category_data)) {
+	  foreach ($category_data->Categories as $Category) {
+		  $select_options .= vf_get_select_option($Category->Name, $Category->CategoryID, $categoryid);
+	  }
+  }
+  
+?>
+<div class="wrap">
+   <div id="icon-options-general" class="icon32"><br /></div>
+   <h2><?php _e('Vanilla Comment Integration'); ?></h2>
+	<?php vf_open_form('embed-comments-form'); ?>
+	 <p>
+		<label>
+		  <input type="checkbox" name="<?php echo vf_get_option_name('embed-comments'); ?>" value="1"<?php echo $embed_comments == '1' ? ' checked="checked"' : ''; ?> />
+		  Replace your blog's native commenting system with Vanilla comments.
+		</label>
+	 </p>
+	 <p>
+		<label>
+		  <select name="<?php echo vf_get_option_name('embed-categoryid'); ?>"><?php echo $select_options; ?></select>
+		  <?php echo __('Place embedded comments into the selected category.'); ?>
+		</label>
+	 </p>
+    <p class="submit"><input type="submit" name="save" value="<?php _e('Save Changes'); ?>" /></p>
+  </form>
+</div>
+<?php
+}
+
+// Include the javascript for comment counts on the main blog index
+function vf_comment_count_js() {
+  if (!is_admin()) {
+	 $options = get_option(VF_OPTIONS_NAME);
+    $vanilla_url = vf_get_value('url', $options, '');
+	 ?>
+<script type="text/javascript">
+var vanilla_forum_url = '<?php echo $vanilla_url; ?>';
+(function() {
+   var timestamp = new Date().getTime();
+   var vanilla_count = document.createElement('script');
+   vanilla_count.type = 'text/javascript';
+   vanilla_count.src = vanilla_forum_url + '/js/count.js?time='+timestamp;
+   (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(vanilla_count);
+})();
+</script>
+<?php
+  }
+}
+
+// ugly global hack for comments closing
+$EMBED = false;
+function vf_comments_template($value) {
+    global $EMBED;
+    global $post;
+    global $comments;
+
+    if (!(is_singular() && (have_comments() || $post->comment_status == 'open')))
+      return;
+	 
+	 $options = get_option(VF_OPTIONS_NAME);
+	 $embed_comments = vf_get_value('embed-comments', $options);
+	 if (!$embed_comments)
+		return $value;
+
+    $EMBED = true;
+    return dirname(__FILE__) . '/comments.php';
+}
+
+/**
+ * Hide the default comment form by marking all comments
+ * as closed.
+ */
+function vf_comments_open($open, $post_id = null) {
+    global $EMBED;
+    if ($EMBED) return false;
+    return $open;
+}
+
+function vf_comments_number($text) {
+  global $post;
+  return '<span vanilla-identifier="'.$post->ID.'">'.$text.'</span>';
+}

@@ -3,7 +3,7 @@
 Plugin Name: Vanilla Forums
 Plugin URI: http://vanillaforums.org/addons/
 Description: Adds deep integration for Vanilla Forums to Wordpress, including: the ability to embed the entire forum into a WordPress page; Discussion, category, and activity widgets.
-Version: 1.0.5
+Version: 1.1.0
 Author: Mark O'Sullivan
 Author URI: http://www.vanillaforums.org/
 
@@ -18,6 +18,12 @@ ChangeLog:
 1.0.5
 - Fixed css & js includes so the containing folder is no longer hard-coded.
 - Added css file so Vanilla icon displays on all admin pages (not just when looking at a vanilla page).
+1.0.6
+- Forgot to add the admin.css file to svn in the last release
+1.1.0
+- Cleaned up url validation (allow you to override it now if you want)
+- Adding new jsConnect SSO functionality
+- Added comment embedding
 
 Copyright 2010 Vanilla Forums Inc
 This file is part of the Vanilla Forums plugin for WordPress.
@@ -35,5 +41,5 @@ include_once(VF_PLUGIN_PATH.'/functions.php');
 include_once(VF_PLUGIN_PATH.'/admin.php');
 include_once(VF_PLUGIN_PATH.'/embed.php');
 include_once(VF_PLUGIN_PATH.'/widgets.php');
-// include_once(VF_PLUGIN_PATH.'/sso.php');
+include_once(VF_PLUGIN_PATH.'/sso.php');
 include_once(VF_PLUGIN_PATH.'/hooks.php');
