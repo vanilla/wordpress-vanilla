@@ -58,5 +58,5 @@ jQuery(document).ready( function($) {
 		});
 	}
 	makeSlugeditClickable();
-
+	
 });

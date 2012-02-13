@@ -1,6 +1,6 @@
 <?php
 
-//only enqueue all the admin stuff if is_admin
+// only enqueue all the admin stuff if is_admin
 if (is_admin()) {
 	// Initialize admin settings
 	add_action('admin_init', 'vf_admin_init');
@@ -21,4 +21,15 @@ $url = vf_get_value('url', $options);
 if ($url != '') {
 	// Add Vanilla Widgets to WordPress
 	add_action('widgets_init', 'vf_widgets_init');
+
+	// Override wordpress' core functions for rendering comments and comment counts.
+	add_filter('comments_template', 'vf_comments_template', 1, 2);
+	// add_filter('comments_number', 'vf_comments_number');
+	// add_filter('get_comments_number', 'vf_get_comments_number');
 }
+
+// Override the comment link html
+add_filter('comments_open', 'vf_comments_open');
+add_filter('comments_number', 'vf_comments_number');
+// Add our js to update the comment count
+add_action('wp_footer', 'vf_comment_count_js');

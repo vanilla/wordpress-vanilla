@@ -58,31 +58,11 @@ function vf_get_value($Key, &$Collection, $Default = FALSE) {
  * @param string $Url The url to make a REST request to.
  */
 function vf_rest($Url) {
-	try {
-		$C = curl_init();
-		curl_setopt($C, CURLOPT_RETURNTRANSFER, TRUE);
-		curl_setopt($C, CURLOPT_SSL_VERIFYPEER, FALSE);
-		curl_setopt($C, CURLOPT_URL, $Url);
-		$Contents = curl_exec($C);
- 
-		if ($Contents === FALSE)
-			$Contents = curl_error($C);
- 
-		$Info = curl_getinfo($C);
-		if (strpos(vf_get_value('content_type', $Info, ''), '/javascript') !== FALSE) {
-			$Result = json_decode($Contents, TRUE);
-			if (is_array($Result) && isset($Result['Exception']) && isset($Result['Code'])) {
-				curl_close($C);
-				throw new Exception($Result['Exception'], $Result['Code']);
-			}
-		} else {
-			$Result = $Contents;
-		}
-		curl_close($C);
-		return $Result;
-	} catch (Exception $ex) {
-		return $ex;
-	}
+	$Response = wp_remote_get($Url);
+	if (is_wp_error($Response))
+		return $Response->get_error_message();
+	
+	return wp_remote_retrieve_body($Response);
 }
 
 /**
@@ -98,7 +78,7 @@ function vf_rest($Url) {
  * @param string $delimiter The delimiter to use when concatenating. Defaults to system-defined directory separator.
  * @returns The concatentated path.
  */
-function vf_combine_paths($paths, $delimiter = DS) {
+function vf_combine_paths($paths, $delimiter = '/') {
 	if (is_array($paths)) {
 		$munged_path = implode($delimiter, $paths);
 		$munged_path = str_replace(array($delimiter.$delimiter.$delimiter, $delimiter.$delimiter), array($delimiter, $delimiter), $munged_path);
@@ -136,23 +116,13 @@ function vf_validate_options($options) {
 		case 'url-form':
 			$url = vf_get_value('url', $options, '');
 			$options = $alloptions;
-			// Validate that there is a vanilla installation at the url, and grab the WebRoot from the source.
-			$html = vf_rest($url);
-			$wr_pos = strpos($html, 'WebRoot" value="');
-			if ($wr_pos > 0) {
-				$webroot = substr($html, $wr_pos + 16);
-				$webroot = substr($webroot, 0, strpos($webroot, '"'));
-				$options['url'] = $webroot;
-				if (vf_get_value('embed-code', $options, '') == '') {
-					// Set the embed_code if it is not already defined.
-					$embedurl = vf_combine_paths(array($webroot, 'plugins/embedvanilla/remote.js'), '/');
-					$options['embed-code'] = '<script type="text/javascript" src="'.$embedurl.'"></script>';
-				}
-				vf_configure_embed_container();
-			} else {
-				$options['url'] = '';
-				add_settings_error('url', 'url', 'Forum url could not be validated. Are you sure you entered the correct web address of your forum?'); 
+			$options['url'] = $url;
+			if (vf_get_value('embed-code', $options, '') == '') {
+				// Set the embed_code if it is not already defined.
+				$embedurl = vf_combine_paths(array($url, 'js/embed.js'), '/');
+				$options['embed-code'] = '<script type="text/javascript" src="'.$embedurl.'"></script>';
 			}
+			vf_configure_embed_container();
 			break;
 		case 'embed-form':
 			$embed_code = vf_get_value('embed-code', $options, '');
@@ -161,12 +131,19 @@ function vf_validate_options($options) {
 			$url = vf_get_value('url', $options, '');
 			if ($embed_code == '') {
 				// Set the embed_code if it is not already defined.
-				$embedurl = vf_combine_paths(array($url, 'plugins/embedvanilla/remote.js'), '/');
+				$embedurl = vf_combine_paths(array($url, 'js/embed.js'), '/');
 				$options['embed-code'] = '<script type="text/javascript" src="'.$embedurl.'"></script>';
 			} else {
 				$options['embed-code'] = $embed_code;
 			}
 			$options['embed-widgets'] = $embed_widgets;
+			break;
+		case 'embed-comments-form':
+			$embed_comments = vf_get_value('embed-comments', $options, '0');
+			$embed_categoryid = vf_get_value('embed-categoryid', $options, '0');
+			$options = $alloptions;
+			$options['embed-comments'] = $embed_comments;
+			$options['embed-categoryid'] = $embed_categoryid;
 			break;
 		default:
 			$options = array_merge($alloptions, $options);
@@ -174,6 +151,21 @@ function vf_validate_options($options) {
 	}
 	
 	return $options;
+}
+
+/**
+ * Validate that the provided url is a vanilla forum root. Returns properly formatted url if it is, or FALSE.
+ */
+function vf_validate_url($url) {
+  $html = vf_rest($url);
+  $wr_pos = strpos($html, 'WebRoot" value="');
+  if ($wr_pos > 0) {
+	 $webroot = substr($html, $wr_pos + 16);
+	 $webroot = substr($webroot, 0, strpos($webroot, '"'));
+	 return $webroot;
+  } else {
+	 return FALSE;
+  }
 }
 
 function vf_get_select_option($name, $value, $selected_value = '') {

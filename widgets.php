@@ -99,7 +99,7 @@ function vf_widgets_init() {
 		
 		// Retrieve & build the category dropdown
 		$resturl = vf_get_value('url', $options, '');
-		$resturl = vf_combine_paths(array($resturl, '?p=categories.json'), '/');
+		$resturl = vf_combine_paths(array($resturl, '?p=categories/all.json'), '/');
 		$category_data = json_decode(vf_rest($resturl));
 		$select_options = vf_get_select_option('All Categories', '0', $categoryid);
 		if (is_object($category_data)) {
