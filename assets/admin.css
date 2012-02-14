@@ -1,0 +1,16 @@
+#adminmenu #toplevel_page_vf-admin-handle div.wp-menu-image {
+	background: url("vanilla-sprite.png") no-repeat scroll -1px -33px transparent;
+}
+#adminmenu #toplevel_page_vf-admin-handle:hover div.wp-menu-image,
+#adminmenu #toplevel_page_vf-admin-handle.wp-has-current-submenu div.wp-menu-image {
+	background: url("vanilla-sprite.png") no-repeat scroll -1px -1px transparent;
+}
+.Progress {
+	background: url('progress_sm.gif') center 5px no-repeat;
+	width: 80px;
+	line-height: 2;
+	text-indent: -1000px;
+	display: inline-block;
+	overflow: hidden;
+	vertical-align: middle;
+}
