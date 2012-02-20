@@ -51,20 +51,31 @@ function vf_widgets_init() {
 		if ($categoryid > 0)
 			$resturl = array($url, '?p=categories/'.$categoryid.'.json');
 			
-		$DataName = $categoryid > 0 ? 'DiscussionData' : 'Discussions';
+//		$DataName = $categoryid > 0 ? 'DiscussionData' : 'Discussions';
 		
 		// Retrieve the latest discussions from the Vanilla API
 		$resturl = vf_combine_paths($resturl, '/');
 		$data = json_decode(vf_rest($resturl));
 		if (!is_object($data))
 			return;
+      
+      if (isset($data->Discussions))
+         $Discussions = $data->Discussions;
+      elseif (isset($data->DiscussionData))
+         $Discussions = $data->DiscussionData;
+      else
+         $Discussions = array();
+      
+      if (empty($Discussions))
+         return;
 
 		// These lines generate our output. Widgets can be very complex
 		// but as you can see here, they can also be very, very simple.
 		echo $before_widget . $before_title . $title . $after_title;
 		echo '<ul>';
 		$i = 0;
-		foreach ($data->$DataName as $Discussion) {
+		foreach ($Discussions as $Discussion) {
+//         var_dump($Discussion);
 			$i++;
 			if ($i > $count)
 				break;
@@ -148,16 +159,26 @@ function vf_widgets_init() {
 		if (!is_object($data))
 			return;
 
+      if (isset($data->Activities))
+         $Activities = $data->Activities;
+      else if (isset($data->ActivityData))
+         $Activities = $data->ActivityData;
+      else
+         $Activities = array();
+      
+      if (empty($Activities))
+         return;
+
 		// These lines generate our output. Widgets can be very complex
 		// but as you can see here, they can also be very, very simple.
 		echo $before_widget . $before_title . $title . $after_title;
 		echo '<ul>';
 		$i = 0;
-		foreach ($data->ActivityData as $Activity) {
+		foreach ($Activities as $Activity) {
 			$i++;
 			if ($i > $count)
 				break;
-			
+         
 			echo '<li>'.vf_format_activity($Activity, $link_url).'</li>';
 		}
 		echo '</ul>';

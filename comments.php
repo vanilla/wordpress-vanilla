@@ -6,11 +6,7 @@ $categoryid = vf_get_value('embed-categoryid', $options, '0');
 <script type="text/javascript">
 var vanilla_forum_url = '<?php echo vf_get_value('url', $options); ?>'; // Required: the full http url & path to your vanilla forum
 var vanilla_identifier = '<?php echo $post->ID; ?>'; // Required: your unique identifier for the content being commented on
-/*
 var vanilla_url = '<?php echo get_permalink(); ?>'; // Current page's url
-var vanilla_name = '<?php echo urlencode($post->post_title); ?>'; // Used as the the discussion title
-var vanilla_body = '<?php echo urlencode($post->post_excerpt); ?>'; // Used as the discussion body
-*/
 <?php if ($categoryid > 0) { ?>
 var vanilla_category_id = '<?php echo $categoryid; ?>'; // Embed comments in this category
 <?php } ?>
