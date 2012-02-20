@@ -193,6 +193,9 @@ function vf_get_select_option($name, $value, $selected_value = '') {
  * @return string
  */
 function vf_format_activity($Activity, $Url) {
+   if (isset($Activity->Headline))
+      return $Activity->Headline;
+   
 	$ProfileUserID = -1;
 	$ViewingUserID = -1;
 	$GenderSuffixCode = 'First';
