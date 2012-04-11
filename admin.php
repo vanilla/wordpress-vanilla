@@ -46,7 +46,7 @@ function vf_admin_init() {
 }
 
 function vf_add_vanilla_menu() {
-  add_menu_page('Vanilla Forum', 'Vanilla Forum', 'manage_options', 'vf-admin-handle', 'vf_admin_page', plugins_url('VanillaForums/assets/transparent.png'));
+  add_menu_page('Vanilla Forum', 'Vanilla Forum', 'manage_options', 'vf-admin-handle', 'vf_admin_page', plugins_url('assets/transparent.png', __FILE__));
   add_submenu_page('vf-admin-handle', 'Setup', 'Setup', 'manage_options', 'vf-admin-handle', 'vf_admin_page');
   
   // Don't show the various forum pages unless the forum url has been properly defined.
@@ -104,12 +104,17 @@ jQuery(document).ready( function($) {
 	/* Validate a vanilla forum url */
 	validateUrl = function() {
 		var validateUrl = $('input.InputBox').val();
+      if (validateUrl == '') {
+         $('.Progress').hide();
+         return;
+      }
+      
 		$('.Validated, .Invalid').hide();
 		$('.Progress').show();
 		$.ajax({
 		  url: '<?php echo site_url('wp-admin/admin.php?page=vf-admin-handle&vanillavalidate='); ?>'+validateUrl,
 		  success: function(data) {
-			 if (data.indexOf('http://') > -1) {
+			 if (data.indexOf('http://') == 0) {
 				$('input.InputBox').val(data);
 				$('.Validated').show();
 			 } else {
@@ -146,7 +151,7 @@ jQuery(document).ready( function($) {
 		<input name="<?php echo vf_get_option_name('url'); ?>" value="<?php echo $url; ?>" class="InputBox" />
 		<span class="Progress">...</span>
 		<span class="Validated">Validated :)</span>
-		<span class="Invalid">Failed to validate url :/</span>
+		<span class="Invalid">Couldn't find a Vanilla Forum at this url :/</span>
 		<em>eg. http://yourdomain.com/forum</em>
       <p class="submit">
 		  <input type="submit" class="Validate" name="validate" value="<?php _e('Re-validate'); ?>" />
