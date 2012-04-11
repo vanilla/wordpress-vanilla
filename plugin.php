@@ -2,8 +2,8 @@
 /*
 Plugin Name: Vanilla Forums
 Plugin URI: http://vanillaforums.org/addons/
-Description: Integrates Vanilla Forums with Wordpress: embedded comments, embedded forum, single sign on, and Wordpress widgets.
-Version: 1.1.3
+Description: Integrates Vanilla Forums with Wordpress: embedded blog comments, embedded forum, single sign on, and Wordpress widgets.
+Version: 1.1.4
 Author: Mark O'Sullivan
 Author URI: http://www.vanillaforums.org/
 
@@ -33,6 +33,10 @@ ChangeLog:
 - Fixed discussion & activity widgets to pull data correctly.
 - Removed unnecessary variables from comments.php template.
 - Removed unnecessary timestamping of count.js url.
+1.1.4
+- Updated description, help, and readme.
+- Fixed bad reference to transparent.png that caused a broken image in the dashboard menu.
+- Fixed a bug that caused the forum url input to fill with garbage when the input is blank or an incorrect url is used.
 
 Copyright 2010 Vanilla Forums Inc
 This file is part of the Vanilla Forums plugin for WordPress.
