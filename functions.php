@@ -333,3 +333,19 @@ function vf_format_url($string) {
 	$string = rawurlencode(strtolower($string));
 	return $string;
 }
+
+/** 
+ * Place the Vanilla Forum on the external domain redirect whitelist.
+ */
+function vf_allowed_redirect_hosts($allowed_hosts, $lp) {
+   $path = str_replace(array('http://', 'https://'), array('', ''), vf_get_option('url'));
+   $ix = strpos($path, '/');
+   if ($ix !== FALSE)
+      $path = substr($path, 0, $ix);
+
+   
+   if (!in_array($path, $allowed_hosts))
+		$allowed_hosts[] = $path;
+
+	return $allowed_hosts;
+}
