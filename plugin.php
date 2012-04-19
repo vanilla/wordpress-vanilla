@@ -37,6 +37,8 @@ ChangeLog:
 - Updated description, help, and readme.
 - Fixed bad reference to transparent.png that caused a broken image in the dashboard menu.
 - Fixed a bug that caused the forum url input to fill with garbage when the input is blank or an incorrect url is used.
+1.1.5
+- Added fix so that the forum's domain is on the trusted domain whitelist in wordpress and redirects will function properly between wordpress and vanilla.
 
 Copyright 2010 Vanilla Forums Inc
 This file is part of the Vanilla Forums plugin for WordPress.

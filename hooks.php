@@ -24,8 +24,9 @@ if ($url != '') {
 
 	// Override wordpress' core functions for rendering comments and comment counts.
 	add_filter('comments_template', 'vf_comments_template', 1, 2);
-	// add_filter('comments_number', 'vf_comments_number');
-	// add_filter('get_comments_number', 'vf_get_comments_number');
+   
+   // Place the Vanilla Forum on the external domain redirect whitelist.
+   add_filter('allowed_redirect_hosts', 'vf_allowed_redirect_hosts', 10, 2 );   
 }
 
 // Override the comment link html
