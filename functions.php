@@ -342,7 +342,6 @@ function vf_allowed_redirect_hosts($allowed_hosts, $lp) {
    $ix = strpos($path, '/');
    if ($ix !== FALSE)
       $path = substr($path, 0, $ix);
-
    
    if (!in_array($path, $allowed_hosts))
 		$allowed_hosts[] = $path;
