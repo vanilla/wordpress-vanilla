@@ -295,6 +295,54 @@ function vf_get_link_url($options) {
 	return $url;
 }
 
+function vf_get_user() {
+   global $current_user;
+   
+   if (!function_exists('get_currentuserinfo'))
+      require (ABSPATH . WPINC . '/pluggable.php');
+   get_currentuserinfo();
+		
+   $user = array();
+   if ($current_user->ID != '') {
+      $user['uniqueid'] = $current_user->ID;
+      $user['name'] = $current_user->display_name;
+      $user['email'] = $current_user->user_email;
+      $user['photourl'] = ''; //
+      $user['wp_nonce'] = wp_create_nonce('log-out');
+      
+      try {
+         $avatar = new SimpleXMLElement(get_avatar($current_user->ID));
+         if (isset($avatar['src']))
+            $user['photourl'] = $avatar['src'];
+      } catch (Exception $Ex) {
+      }
+   }
+   
+   return $user;
+}
+
+function vf_get_sso_string() {
+   $user = vf_get_user();
+   
+   if (empty($user))
+      return '';
+   
+   $options = get_option(VF_OPTIONS_NAME);
+   $clientID = vf_get_value('sso-clientid', $options, '');
+   $secret = vf_get_value('sso-secret', $options, '');
+   if (!$clientID || !$secret)
+      return '';
+   
+   $user['client_id'] = $clientID;
+   
+   $string = base64_encode(json_encode($user));
+   $timestamp = time();
+   $hash = hash_hmac('sha1', "$string $timestamp", $secret);
+   
+   $result = "$string $hash $timestamp hmacsha1";
+   return $result;
+}
+
 function vf_user_photo($User, $Url, $CssClass = '') {
 	if ($User->Photo == '')
 		$User->Photo = vf_combine_paths(array($Url, 'applications/dashboard/design/images/usericon.gif'), '/');
