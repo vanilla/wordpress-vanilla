@@ -3,7 +3,7 @@ Contributors: VanillaForums
 Tags: forum, forums, community, vanilla, vanilla forums, single sign-on, sso, widgets, widget, embed, embedded forum
 Requires at least: 3
 Tested up to: 3.3.1
-Stable tag: 1.1.6
+Stable tag: 1.1.7
 
 == Description ==
 

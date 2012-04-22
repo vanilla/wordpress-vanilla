@@ -10,22 +10,9 @@ $VFRequest = vf_get_value('VFRequest', $_GET);
 switch ($VFRequest) {
 	// Show the signed in user
 	case 'connect':
-		global $current_user;
-		if (!function_exists('get_currentuserinfo'))
-			require (ABSPATH . WPINC . '/pluggable.php');
-			
-      get_currentuserinfo();
-		require_once dirname(__FILE__).'/functions.jsconnect.php';
-		
-		$user = array();
-		if ($current_user->ID != '') {
-			$user['uniqueid'] = $current_user->ID;
-			$user['name'] = $current_user->display_name;
-			$user['email'] = $current_user->user_email;
-			$user['photourl'] = '';
-			$user['wp_nonce'] = wp_create_nonce('log-out');
-		}
-		
+      require_once dirname(__FILE__).'/functions.jsconnect.php';
+      
+      $user = vf_get_user();
 		$options = get_option(VF_OPTIONS_NAME);
 		$clientID = vf_get_value('sso-clientid', $options, '');
 		$secret = vf_get_value('sso-secret', $options, '');

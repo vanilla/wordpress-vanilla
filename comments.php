@@ -10,6 +10,11 @@ var vanilla_url = '<?php echo get_permalink(); ?>'; // Current page's url
 <?php if ($categoryid > 0) { ?>
 var vanilla_category_id = '<?php echo $categoryid; ?>'; // Embed comments in this category
 <?php } ?>
+<?php 
+if ($sso = vf_get_sso_string()) {
+   echo "var vanilla_sso = '$sso';"; // Single-Sign-On string.
+}
+?>
 (function() {
 	var vanilla = document.createElement('script');
 	vanilla.type = 'text/javascript';
