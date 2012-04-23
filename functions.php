@@ -313,7 +313,7 @@ function vf_get_user() {
       try {
          $avatar = new SimpleXMLElement(get_avatar($current_user->ID));
          if (isset($avatar['src']))
-            $user['photourl'] = $avatar['src'];
+            $user['photourl'] = (string)$avatar['src'];
       } catch (Exception $Ex) {
       }
    }
