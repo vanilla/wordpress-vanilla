@@ -34,3 +34,4 @@ add_filter('comments_open', 'vf_comments_open');
 add_filter('comments_number', 'vf_comments_number');
 // Add our js to update the comment count
 add_action('wp_footer', 'vf_comment_count_js');
+add_action('wp_loaded', 'vf_check_request');
