@@ -3,6 +3,12 @@
  * Utility & hook functions.
  */
 
+function vf_check_request() {
+   if (isset($_GET['VFRequest'])) {
+      require dirname(__FILE__).'/sso.php';
+   }
+}
+
 
 /**
  * Retrieve an option value from wordpress.
@@ -299,9 +305,9 @@ function vf_get_user() {
    global $current_user;
    
    if (!function_exists('get_currentuserinfo'))
-      require (ABSPATH . WPINC . '/pluggable.php');
+      require_once ABSPATH . WPINC . '/pluggable.php';
    get_currentuserinfo();
-		
+   
    $user = array();
    if ($current_user->ID != '') {
       $user['uniqueid'] = $current_user->ID;
@@ -310,13 +316,25 @@ function vf_get_user() {
       $user['photourl'] = ''; //
       $user['wp_nonce'] = wp_create_nonce('log-out');
       
+      // Do some fudgery to grab the photo url.
       try {
          $avatar = new SimpleXMLElement(get_avatar($current_user->ID));
          if (isset($avatar['src']))
             $user['photourl'] = (string)$avatar['src'];
       } catch (Exception $Ex) {
       }
-   }
+      
+      // Add the user's roles to the SSO.
+      if (isset($current_user->roles)) {
+         $user['roles'] = implode(',', $current_user->roles);
+      } else {
+         $user['roles'] = null;
+      }
+//      $user['_user'] = $current_user;
+   }   
+   
+   // Allow other plugins to modify the user.
+   $user = apply_filters('vf_get_user', $user);
    
    return $user;
 }
