@@ -1,13 +1,24 @@
 <?php if (!is_preview()) {
 $options = get_option(VF_OPTIONS_NAME);
+
 $categoryid = vf_get_value('embed-categoryid', $options, '0');
+
+if (vf_get_value('embed-matchcategories', $options, '0')) {
+   // Send the post's category ID instead of the default.
+   $categories = get_the_category();
+   if (!empty($categories)) {
+      $category = array_shift($categories);
+      if (isset($category->slug))
+         $categoryid = $category->slug;
+   }
+}
 ?>
 <div id="vanilla-comments"></div>
 <script type="text/javascript">
 var vanilla_forum_url = '<?php echo vf_get_value('url', $options); ?>'; // Required: the full http url & path to your vanilla forum
 var vanilla_identifier = '<?php echo $post->ID; ?>'; // Required: your unique identifier for the content being commented on
 var vanilla_url = '<?php echo get_permalink(); ?>'; // Current page's url
-<?php if ($categoryid > 0) { ?>
+<?php if ($categoryid) { ?>
 var vanilla_category_id = '<?php echo $categoryid; ?>'; // Embed comments in this category
 <?php } ?>
 <?php 
