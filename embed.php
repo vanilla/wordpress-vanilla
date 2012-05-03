@@ -125,6 +125,7 @@ function vf_comment_admin_page() {
   $resturl = vf_get_value('url', $options, '');
   $resturl = vf_combine_paths(array($resturl, '?p=categories/all.json'), '/');
   $categoryid = vf_get_value('embed-categoryid', $options, '0');
+  $matchCategories = vf_get_value('embed-matchcategories', $options, '0');
   $category_data = json_decode(vf_rest($resturl));
   $select_options = vf_get_select_option('No Category', '0', $categoryid);
   if (is_object($category_data)) {
@@ -150,6 +151,12 @@ function vf_comment_admin_page() {
 		  <?php echo __('Place embedded comments into the selected category.'); ?>
 		</label>
 	 </p>
+    <p>
+       <label>
+          <input type="checkbox" name="<?php echo vf_get_option_name('embed-matchcategories'); ?>" value="1"<?php echo $matchCategories == '1' ? ' checked="checked"' : ''; ?> />
+          <?php echo __('Try and match your Wordpress category.'); ?>
+       </label>
+    </p>
     <p class="submit"><input type="submit" name="save" value="<?php _e('Save Changes'); ?>" /></p>
   </form>
 </div>

@@ -147,9 +147,11 @@ function vf_validate_options($options) {
 		case 'embed-comments-form':
 			$embed_comments = vf_get_value('embed-comments', $options, '0');
 			$embed_categoryid = vf_get_value('embed-categoryid', $options, '0');
+         $matchCategories = vf_get_value('embed-matchcategories', $options, '0');
 			$options = $alloptions;
 			$options['embed-comments'] = $embed_comments;
 			$options['embed-categoryid'] = $embed_categoryid;
+         $options['embed-matchcategories'] = $matchCategories;
 			break;
 		default:
 			$options = array_merge($alloptions, $options);
