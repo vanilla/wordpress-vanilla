@@ -274,7 +274,7 @@ jQuery(document).ready(function($) {
 		</label>
 		<label>
 			<strong>Sign In Url</strong>
-			<div class="CopyBox"><?php echo wp_login_url(); ?>?redirect_to={Redirect}</div>
+			<div class="CopyBox"><?php echo wp_login_url(); ?>?redirect_to={Target}</div>
 		</label>
 		<label>
 			<strong>Register Url</strong>
