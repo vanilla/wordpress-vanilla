@@ -91,9 +91,19 @@ function vf_configure_embed_container() {
  */
 function vf_embed_content($content) {
 	global $post;
-	if ($post->ID == vf_get_option('embed-post-id'))
-		$content = stripslashes(vf_get_option('embed-code'));
-
+	if ($post->ID == vf_get_option('embed-post-id')) {
+      $content = '';
+      
+      if ($sso = vf_get_sso_string()) {
+         // Add the sso string for automatic signin.
+         $content = "<script type='text/javascript'>var vanilla_sso = '$sso';</script>";
+      }
+      
+      
+      
+      
+		$content .= stripslashes(vf_get_option('embed-code'));
+   }
 	return $content;
 }
 
