@@ -26,7 +26,7 @@ if ($url != '') {
 	add_filter('comments_template', 'vf_comments_template', 1, 2);
    
    // Place the Vanilla Forum on the external domain redirect whitelist.
-   add_filter('allowed_redirect_hosts', 'vf_allowed_redirect_hosts', 10, 2 );   
+   add_filter('allowed_redirect_hosts', 'vf_allowed_redirect_hosts', 10, 2 );
 }
 
 // Override the comment link html
@@ -35,3 +35,4 @@ add_filter('comments_number', 'vf_comments_number');
 // Add our js to update the comment count
 add_action('wp_footer', 'vf_comment_count_js');
 add_action('wp_loaded', 'vf_check_request');
+//add_filter('allowed_redirect_hosts', 'vf_allowed_redirect_hosts');

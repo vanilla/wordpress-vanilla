@@ -413,6 +413,6 @@ function vf_allowed_redirect_hosts($allowed_hosts, $lp) {
    
    if (!in_array($path, $allowed_hosts))
 		$allowed_hosts[] = $path;
-
+   
 	return $allowed_hosts;
 }
