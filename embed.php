@@ -99,10 +99,9 @@ function vf_embed_content($content) {
          $content = "<script type='text/javascript'>var vanilla_sso = '$sso';</script>";
       }
       
-      
-      
-      
 		$content .= stripslashes(vf_get_option('embed-code'));
+      
+      vf_forum_embedded(true);
    }
 	return $content;
 }
@@ -201,7 +200,12 @@ function vf_comments_template($value) {
 
     if (!(is_singular() && (have_comments() || $post->comment_status == 'open')))
       return;
-	 
+    
+    if (vf_forum_embedded()) {
+       $EMBED = true;
+       return dirname(__FILE__).'/empty.php';
+    }
+    
 	 $options = get_option(VF_OPTIONS_NAME);
 	 $embed_comments = vf_get_value('embed-comments', $options);
 	 if (!$embed_comments)
