@@ -95,6 +95,18 @@ function vf_combine_paths($paths, $delimiter = '/') {
 }
 
 /**
+ * Whether or not the forum has been embedded.
+ * @param bool|null $value A new value to set.
+ * @return bool
+ */
+function vf_forum_embedded($value = null) {
+   static $embedded = false;
+   if ($value !== null)
+      $embedded = $value;
+   return $embedded;
+}
+
+/**
  * Writes out the opening of an options form.
  */
 function vf_open_form($formname) {
