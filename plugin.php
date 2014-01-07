@@ -57,6 +57,8 @@ ChangeLog:
 - Added the auto sso string to the forum embed page.
 1.1.14
 - Added a check for forum embedding so that the forum and comments don't get embedded at the same time.
+1.1.15
+- Added the full role names to the list of roles sent on sso.
 
 Copyright 2010 Vanilla Forums Inc
 This file is part of the Vanilla Forums plugin for WordPress.
@@ -70,7 +72,7 @@ define('VF_OPTIONS_NAME', 'vf-options');
 define('VF_PLUGIN_PATH', dirname(__FILE__));
 define('VF_PLUGIN_URL', WP_PLUGIN_URL.'/'.plugin_basename(dirname(__FILE__)));
 
-include_once(VF_PLUGIN_PATH.'/functions.php'); 
+include_once(VF_PLUGIN_PATH.'/functions.php');
 include_once(VF_PLUGIN_PATH.'/admin.php');
 include_once(VF_PLUGIN_PATH.'/embed.php');
 include_once(VF_PLUGIN_PATH.'/widgets.php');

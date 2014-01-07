@@ -35,7 +35,7 @@ function vf_update_option($option_name, $option_value) {
 	$options = get_option(VF_OPTIONS_NAME);
 	if (!is_array($options))
 		$options = array();
-		
+
 	$options[$option_name] = $option_value;
 	$return = update_option(VF_OPTIONS_NAME, $options);
 }
@@ -54,7 +54,7 @@ function vf_get_value($Key, &$Collection, $Default = FALSE) {
 	} elseif(is_object($Collection) && property_exists($Collection, $Key)) {
 		$Result = $Collection->$Key;
 	}
-		
+
 	return $Result;
 }
 
@@ -67,7 +67,7 @@ function vf_rest($Url) {
 	$Response = wp_remote_get($Url);
 	if (is_wp_error($Response))
 		return $Response->get_error_message();
-	
+
 	return wp_remote_retrieve_body($Response);
 }
 
@@ -79,7 +79,7 @@ function vf_rest($Url) {
  * array('/path/to/vanilla/', '/applications/dashboard')
  * array('/path', 'to', 'vanilla', 'applications', 'dashboard')
  * array('/path/', '/to/', '/vanilla/', '/applications/', '/dashboard')
- * 
+ *
  * @param array $paths The array of paths to concatenate.
  * @param string $delimiter The delimiter to use when concatenating. Defaults to system-defined directory separator.
  * @returns The concatentated path.
@@ -129,7 +129,7 @@ function vf_validate_options($options) {
 	$alloptions = get_option(VF_OPTIONS_NAME);
 	if (!is_array($alloptions))
 		$alloptions = array();
-		
+
 	switch ($formname) {
 		case 'url-form':
 			$url = vf_get_value('url', $options, '');
@@ -169,7 +169,7 @@ function vf_validate_options($options) {
 			$options = array_merge($alloptions, $options);
 			break;
 	}
-	
+
 	return $options;
 }
 
@@ -215,12 +215,12 @@ function vf_get_select_option($name, $value, $selected_value = '') {
 function vf_format_activity($Activity, $Url) {
    if (isset($Activity->Headline))
       return $Activity->Headline;
-   
+
 	$ProfileUserID = -1;
 	$ViewingUserID = -1;
 	$GenderSuffixCode = 'First';
 	$GenderSuffixGender = $Activity->ActivityGender;
-	
+
 	if ($ViewingUserID == $Activity->ActivityUserID) {
 		$ActivityName = $ActivityNameP = 'You';
 	} else {
@@ -285,7 +285,7 @@ function vf_format_activity($Activity, $Url) {
 	$FullHeadline = $Activity->FullHeadline;
 	$ProfileHeadline = $Activity->ProfileHeadline;
 	$MessageFormat = ($ProfileUserID == $Activity->ActivityUserID || $ProfileUserID == '' ? $FullHeadline : $ProfileHeadline);
-	
+
 	return sprintf($MessageFormat, $ActivityName, $ActivityNameP, $RegardingName, $RegardingNameP, $RegardingWall, $Gender, $Gender2, $Route, $GenderSuffix);
 }
 
@@ -316,12 +316,12 @@ function vf_get_link_url($options) {
 }
 
 function vf_get_user() {
-   global $current_user;
-   
+   global $current_user, $wp_roles;
+
    if (!function_exists('get_currentuserinfo'))
       require_once ABSPATH . WPINC . '/pluggable.php';
    get_currentuserinfo();
-   
+
    $user = array();
    if ($current_user->ID != '') {
       $user['uniqueid'] = $current_user->ID;
@@ -329,7 +329,7 @@ function vf_get_user() {
       $user['email'] = $current_user->user_email;
       $user['photourl'] = ''; //
       $user['wp_nonce'] = wp_create_nonce('log-out');
-      
+
       // Do some fudgery to grab the photo url.
       try {
          $avatar = new SimpleXMLElement(get_avatar($current_user->ID));
@@ -337,40 +337,59 @@ function vf_get_user() {
             $user['photourl'] = (string)$avatar['src'];
       } catch (Exception $Ex) {
       }
-      
+
       // Add the user's roles to the SSO.
       if (isset($current_user->roles)) {
-         $user['roles'] = implode(',', $current_user->roles);
+         if (!isset( $wp_roles ) )
+            $wp_roles = new WP_Roles();
+
+         $role_names = $wp_roles->role_names;
+
+         $roles = array();
+         foreach ((array)$current_user->roles as $role_slug) {
+            // Add the role slug.
+            $roles[] = $role_slug;
+
+            // Add the role name if it's different from the slug.
+            if (isset($role_names[$role_slug])) {
+               $role_name = $role_names[$role_slug];
+               if (strcasecmp($role_name, $role_slug) !== 0) {
+                  $roles[] = str_replace(',', ' ', $role_name);
+               }
+            }
+         }
+
+         $user['roles'] = implode(',', array_unique($roles));
       } else {
          $user['roles'] = null;
       }
 //      $user['_user'] = $current_user;
-   }   
-   
+   }
+
    // Allow other plugins to modify the user.
    $user = apply_filters('vf_get_user', $user);
-   
+
    return $user;
 }
 
 function vf_get_sso_string() {
    $user = vf_get_user();
-   
+
    if (empty($user))
       return '';
-   
+
    $options = get_option(VF_OPTIONS_NAME);
    $clientID = vf_get_value('sso-clientid', $options, '');
    $secret = vf_get_value('sso-secret', $options, '');
    if (!$clientID || !$secret)
       return '';
-   
+
    $user['client_id'] = $clientID;
-   
+
    $string = base64_encode(json_encode($user));
    $timestamp = time();
    $hash = hash_hmac('sha1', "$string $timestamp", $secret);
-   
+
    $result = "$string $hash $timestamp hmacsha1";
    return $result;
 }
@@ -378,9 +397,9 @@ function vf_get_sso_string() {
 function vf_user_photo($User, $Url, $CssClass = '') {
 	if ($User->Photo == '')
 		$User->Photo = vf_combine_paths(array($Url, 'applications/dashboard/design/images/usericon.gif'), '/');
-	
+
 	$CssClass = $CssClass == '' ? '' : ' class="'.$CssClass.'"';
-	$IsFullPath = strtolower(substr($User->Photo, 0, 7)) == 'http://' || strtolower(substr($User->Photo, 0, 8)) == 'https://'; 
+	$IsFullPath = strtolower(substr($User->Photo, 0, 7)) == 'http://' || strtolower(substr($User->Photo, 0, 8)) == 'https://';
 	$PhotoUrl = ($IsFullPath) ? $User->Photo : vf_combine_paths(array($Url, 'uploads/'.vf_change_basename($User->Photo, 'n%s')), '/');
 	return '<a href="'.vf_combine_paths(array($Url, '/profile/'.$User->UserID.'/'.urlencode($User->Name)), '/').'"'.$CssClass.' style="display: inline-block; margin: 0 2px 2px 0">'
 		.'<img src="'.$PhotoUrl.'" alt="'.urlencode($User->Name).'" style="width: '.$User->IconWidth.'px; height: '.$User->IconWidth.'px; overflow: hidden; display: inline-block;" />'
@@ -414,7 +433,7 @@ function vf_format_url($string) {
 	return $string;
 }
 
-/** 
+/**
  * Place the Vanilla Forum on the external domain redirect whitelist.
  */
 function vf_allowed_redirect_hosts($allowed_hosts, $lp) {
@@ -422,9 +441,9 @@ function vf_allowed_redirect_hosts($allowed_hosts, $lp) {
    $ix = strpos($path, '/');
    if ($ix !== FALSE)
       $path = substr($path, 0, $ix);
-   
+
    if (!in_array($path, $allowed_hosts))
 		$allowed_hosts[] = $path;
-   
+
 	return $allowed_hosts;
 }
