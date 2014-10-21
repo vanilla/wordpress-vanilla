@@ -71,6 +71,7 @@ We don’t have all the features that stand alone commenting systems have but we
 
 = Q. Can I see some examples of Vanilla Comment implementations? =
 
-* http://www.9to5mac.com and http://www.9to5forums.com
-* http://www.cultofmac.com 
-* http://penny-arcade.com/report
+* http://www.shipstation.com/blog/
+* http://campcomic.com
+* http://unknownworlds.com/
+* http://battlebears.com/
