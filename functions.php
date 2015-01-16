@@ -178,14 +178,22 @@ function vf_validate_options($options) {
  */
 function vf_validate_url($url) {
   $html = vf_rest($url);
+  $wr_pos = strpos($html, '\'WebRoot\' : "');
+  if ($wr_pos > 0) {
+    $webroot = substr($html, $wr_pos + 13);
+    $webroot = substr($webroot, 0, strpos($webroot, '"'));
+    $webroot = stripslashes($webroot);
+    return $webroot;
+  }
+
+  //legacy support
   $wr_pos = strpos($html, 'WebRoot" value="');
   if ($wr_pos > 0) {
-	 $webroot = substr($html, $wr_pos + 16);
-	 $webroot = substr($webroot, 0, strpos($webroot, '"'));
-	 return $webroot;
-  } else {
-	 return FALSE;
+    $webroot = substr($html, $wr_pos + 16);
+    $webroot = substr($webroot, 0, strpos($webroot, '"'));
+    return $webroot;
   }
+  return FALSE;
 }
 
 function vf_get_select_option($name, $value, $selected_value = '') {
