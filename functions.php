@@ -178,14 +178,34 @@ function vf_validate_options($options) {
  */
 function vf_validate_url($url) {
   $html = vf_rest($url);
-  $wr_pos = strpos($html, 'WebRoot" value="');
-  if ($wr_pos > 0) {
-	 $webroot = substr($html, $wr_pos + 16);
-	 $webroot = substr($webroot, 0, strpos($webroot, '"'));
-	 return $webroot;
-  } else {
-	 return FALSE;
+  $formats = array(
+  	 '"WebRoot":"',     // 2.2
+  	 '\'WebRoot\' : "', // 2.0.18.13+ and 2.1.1+
+  	 'WebRoot" value="' // legacy
+  );
+
+  foreach ($formats as $format) {
+  	 if ($chars = strpos($html, $format)) {
+  	   $offset = $chars + strlen(stripslashes($format));
+    	return vf_parse_webroot($html, $offset);
+    }
   }
+
+  return FALSE;
+}
+
+/**
+ * Parse URL at start of HTML.
+ *
+ * @param string $html
+ * @param int $start
+ * @return string URL.
+ */
+function vf_parse_webroot($html, $start) {
+  $webroot = substr($html, $start);
+  $webroot = substr($webroot, 0, strpos($webroot, '"'));
+  $webroot = stripslashes($webroot);
+  return $webroot;
 }
 
 function vf_get_select_option($name, $value, $selected_value = '') {
