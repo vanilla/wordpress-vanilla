@@ -3,7 +3,7 @@
 Plugin Name: Vanilla Forums
 Plugin URI: http://vanillaforums.org/addons/
 Description: Integrates Vanilla Forums with Wordpress: embedded blog comments, embedded forum, single sign on, and Wordpress widgets.
-Version: 1.1.14
+Version: 1.1.16
 Author: Todd Burry
 Author URI: http://www.vanillaforums.org/
 
@@ -59,6 +59,8 @@ ChangeLog:
 - Added a check for forum embedding so that the forum and comments don't get embedded at the same time.
 1.1.15
 - Added the full role names to the list of roles sent on sso.
+1.1.16
+- Fixed webroot parsing in url vaidation function
 
 Copyright 2010 Vanilla Forums Inc
 This file is part of the Vanilla Forums plugin for WordPress.
