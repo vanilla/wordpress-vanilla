@@ -2,7 +2,7 @@
 Contributors: VanillaForums
 Tags: forum, forums, community, vanilla, vanilla forums, single sign-on, sso, widgets, widget, embed, embedded forum
 Requires at least: 3
-Tested up to: 3.3.1
+Tested up to: 4.2.2
 Stable tag: 1.1.12
 
 == Description ==
@@ -37,6 +37,8 @@ Migrating to Vanilla from any other forum platform is a breeze, with ready-made 
 2. Activate the plugin through the 'Plugins' menu in WordPress
 3. Configure the plugin in the WordPress Settings > Vanilla Forum menu
 
+See our handy installation video <a href="https://www.youtube.com/playlist?list=PLEdMTbLR4h8zZ_odA15w4dJg6mcWMDOiC">here</a>
+
 == Frequently Asked Questions ==
 
 = Q. What is Vanilla Forums? =
@@ -55,7 +57,7 @@ To install the Plugin you must get it from your Vanilla forum's Embed Vanilla pa
 
 = Q. How do Vanilla Comments work? =
 
-Embedding Vanilla Comments into your blog will insert a comment window at the bottom of each article. If the reader is not signed in, they will be prompted to do so using the Vanilla login form as you've configured it (SSO, Facebook, Google, Twitter, and OpenID options available). The comments are displayed below the article and simultaneously a new discussion thread is created in the forum.
+Embedding Vanilla Comments into your blog will insert a comment window at the bottom of each article. If the reader is not signed in, they will be prompted to do so using the Vanilla login form as you've configured it (SSO, Facebook, Google, Twitter, and OpenID options available). The comments are displayed below the article and simultaneously a new discussion thread is created in the forum. Hosted customer also have the option of Disqus sign-in integration.
 
 = Q. What about my existing comments? =
 
@@ -69,8 +71,13 @@ Vanilla provides an integrated comment and forum community that will increase yo
 
 We don’t have all the features that stand alone commenting systems have but we are working on many that we see as important such as pre-moderation, integration into blogging software dashboards and automated imports of legacy comments.   
 
+= Q. Can I see use this with Vanilla Forums self-hosted? =
+Yes, you can use this with your self-hosted Vanilla Forums install.
+
 = Q. Can I see some examples of Vanilla Comment implementations? =
 
-* http://www.9to5mac.com and http://www.9to5forums.com
-* http://www.cultofmac.com 
-* http://penny-arcade.com/report
+* http://www.shipstation.com/blog/
+* http://campcomic.com
+* http://unknownworlds.com/
+* http://battlebears.com/
+* https://blog.vanillaforums.com/
