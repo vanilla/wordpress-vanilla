@@ -179,6 +179,7 @@ function vf_validate_options($options) {
 function vf_validate_url($url) {
   $html = vf_rest($url);
   $formats = array(
+  	 '"WebRoot": "',     // 2.2 // BUGFIX 
   	 '"WebRoot":"',     // 2.2
   	 '\'WebRoot\' : "', // 2.0.18.13+ and 2.1.1+
   	 'WebRoot" value="' // legacy
