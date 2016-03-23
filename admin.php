@@ -114,7 +114,7 @@ jQuery(document).ready( function($) {
 		$.ajax({
 		  url: '<?php echo site_url('wp-admin/admin.php?page=vf-admin-handle&vanillavalidate='); ?>'+validateUrl,
 		  success: function(data) {
-			 if (data.indexOf('http://') == 0) {
+			 if (data.indexOf('http://') == 0 || data.indexOf('https://') == 0) {
 				$('input.InputBox').val(data);
 				$('.Validated').show();
 			 } else {
