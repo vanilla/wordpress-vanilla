@@ -49,7 +49,7 @@ function vf_widgets_init() {
 		$link_url = vf_get_link_url($options);
 		$resturl = array($url, '/discussions.json');
 		if ($categoryid > 0)
-			$resturl = array($url, '/categories/'.$categoryid.'/');
+			$resturl = array($url, '/categories/'.$categoryid.'.json');
 			
 //		$DataName = $categoryid > 0 ? 'DiscussionData' : 'Discussions';
 		
