@@ -132,7 +132,7 @@ function vf_comment_admin_page() {
   $embed_comments = vf_get_value('embed-comments', $options);
   
   $resturl = vf_get_value('url', $options, '');
-  $resturl = vf_combine_paths(array($resturl, '?p=categories/all.json'), '/');
+  $resturl = vf_combine_paths(array($resturl, 'api/v1/categories/all.json'), '/');
   $categoryid = vf_get_value('embed-categoryid', $options, '0');
   $matchCategories = vf_get_value('embed-matchcategories', $options, '0');
   $category_data = json_decode(vf_rest($resturl));
