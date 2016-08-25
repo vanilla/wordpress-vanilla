@@ -353,7 +353,7 @@ function vf_get_user() {
 
       $avatarUrl = get_avatar_url($current_user->ID);
       if ($avatarUrl) {
-        $user['photourl'] = $avatarUrl;
+         $user['photourl'] = $avatarUrl;
       }
 
       // Add the user's roles to the SSO.
