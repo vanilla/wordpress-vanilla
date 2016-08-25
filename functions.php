@@ -351,10 +351,10 @@ function vf_get_user() {
       $user['photourl'] = ''; //
       $user['wp_nonce'] = wp_create_nonce('log-out');
 
-	  $avatarUrl = get_avatar_url($current_user->ID);
-	  if ($avatarUrl) {
-	     $user['photourl'] = $avatarUrl;
-	  }
+      $avatarUrl = get_avatar_url($current_user->ID);
+      if ($avatarUrl) {
+        $user['photourl'] = $avatarUrl;
+      }
 
       // Add the user's roles to the SSO.
       if (isset($current_user->roles)) {
