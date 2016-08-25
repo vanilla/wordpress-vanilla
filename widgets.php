@@ -15,7 +15,7 @@ function vf_widgets_admin_page() {
 		<li><strong>Vanilla Recently Active Users Widget</strong> allows you to display a list of users who have been recently active on your forum. You define how many users to show.</li>
 	</ul>
 	<p>All of these widgets are available on your <a href="./widgets.php">WordPress Widget Management page</a>.</p>
-	<p><strong>Note that the widgets will work only with a publicly available Vanilla instance.</strong></p>
+	<p><strong>Note that the widgets will work only with a public Vanilla installation.</strong></p>
 </div>
 	<?php
 }
