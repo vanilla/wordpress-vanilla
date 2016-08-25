@@ -6,15 +6,16 @@
 function vf_widgets_admin_page() {
 	?>
 <div class="wrap">
-   <div id="icon-options-general" class="icon32"><br /></div>
-   <h2><?php _e('Forum Widgets'); ?></h2>
-   <p>Your Vanilla Forum provides some great widgets you can use in your WordPress blog:</p>
+    <div id="icon-options-general" class="icon32"><br /></div>
+    <h2><?php _e('Forum Widgets'); ?></h2>
+    <p>Your Vanilla Forum provides some great widgets you can use in your WordPress blog:</p>
 	<ul>
 		<li><strong>Vanilla Discussions Widget</strong> allows you to display recent discussions in your Vanilla Forum in your WordPress site. You define how many discussions to show, and you can even filter to specific discussion categories.</li>
 		<li><strong>Vanilla Activity Widget</strong> allows you to display recent activity in your forum (user registrations, status updates, etc). You define how many activities to show, and you can even filter to activities from users in specific roles (administrator activity, for example).</li>
 		<li><strong>Vanilla Recently Active Users Widget</strong> allows you to display a list of users who have been recently active on your forum. You define how many users to show.</li>
 	</ul>
 	<p>All of these widgets are available on your <a href="./widgets.php">WordPress Widget Management page</a>.</p>
+	<p><strong>Note that the widgets will work only with a public Vanilla installation.</strong></p>
 </div>
 	<?php
 }
@@ -31,7 +32,7 @@ function vf_widgets_init() {
 
 // Recent Discussions Widget
 	function vf_widget_discussions($args) {
-		
+
 		// $args is an array of strings that help widgets to conform to
 		// the active theme: before_widget, before_title, after_widget,
 		// and after_title are the array keys. Default tags: li and h2.
@@ -44,28 +45,28 @@ function vf_widgets_init() {
 		$count = (int)vf_get_value('widget-discussions-count', $options, '');
 		if ($count < 5)
 			$count = 5;
-			
+
 		$url = vf_get_value('url', $options, '');
 		$link_url = vf_get_link_url($options);
 		$resturl = array($url, '/discussions.json');
 		if ($categoryid > 0)
 			$resturl = array($url, '/categories/'.$categoryid.'.json');
-			
+
 //		$DataName = $categoryid > 0 ? 'DiscussionData' : 'Discussions';
-		
+
 		// Retrieve the latest discussions from the Vanilla API
 		$resturl = vf_combine_paths($resturl, '/');
 		$data = json_decode(vf_rest($resturl));
 		if (!is_object($data))
 			return;
-      
+
       if (isset($data->Discussions))
          $Discussions = $data->Discussions;
       elseif (isset($data->DiscussionData))
          $Discussions = $data->DiscussionData;
       else
          $Discussions = array();
-      
+
       if (empty($Discussions))
          return;
 
@@ -79,7 +80,7 @@ function vf_widgets_init() {
 			$i++;
 			if ($i > $count)
 				break;
-			
+
 			echo '<li><a href="'.vf_combine_paths(array($link_url, 'discussion/'.$Discussion->DiscussionID.'/'.vf_format_url($Discussion->Name)), '/').'">'.$Discussion->Name.'</a></li>';
 		}
 		echo '</ul>';
@@ -107,7 +108,7 @@ function vf_widgets_init() {
 
 		// Be sure you format your options to be valid HTML attributes.
 		$title = htmlspecialchars($title, ENT_QUOTES);
-		
+
 		// Retrieve & build the category dropdown
 		$resturl = vf_get_value('url', $options, '');
 		$resturl = vf_combine_paths(array($resturl, '/categories/all.json'), '/');
@@ -118,7 +119,7 @@ function vf_widgets_init() {
 				$select_options .= vf_get_select_option($Category->Name, $Category->CategoryID, $categoryid);
 			}
 		}
-		
+
 		// Here is our little form segment. Notice that we don't need a
 		// complete form. This will be embedded into the existing form.
 		echo '<p><label for="widget-discussions-title">' . __('Title:') . ' <input style="width: 100%;" id="widget-discussions-title" name="widget-discussions-title" type="text" value="'.$title.'" /></label></p>';
@@ -126,7 +127,7 @@ function vf_widgets_init() {
 		echo '<p><label for="widget-discussions-count">' . __('Number of Discussions to show:') . ' <input style="width: 40px;" id="widget-discussions-count" name="widget-discussions-count" type="text" value="'.$count.'" /></label></p>';
 		echo '<input type="hidden" id="widget-discussions-submit" name="widget-discussions-submit" value="1" />';
 	}
-	
+
 	// This registers our widget so it appears with the other available
 	// widgets and can be dragged and dropped into any active sidebars.
 	wp_register_sidebar_widget('vf-widget-discussions', 'Vanilla Discussions', 'vf_widget_discussions', array('description' => 'Recent discussions in your Vanilla Forum.'));
@@ -146,13 +147,13 @@ function vf_widgets_init() {
 		$count = (int)vf_get_value('widget-activities-count', $options, '');
 		if ($count < 5)
 			$count = 5;
-			
+
 		$url = vf_get_value('url', $options, '');
 		$link_url = vf_get_link_url($options);
 		$resturl = array($url, '/activity.json');
 		// if ($roleid > 0)
 		// 	$resturl = array($url, 'activities/'.$roleid.'.json');
-			
+
 		// Retrieve the latest discussions from the Vanilla API
 		$resturl = vf_combine_paths($resturl, '/');
 		$data = json_decode(vf_rest($resturl));
@@ -165,7 +166,7 @@ function vf_widgets_init() {
          $Activities = $data->ActivityData;
       else
          $Activities = array();
-      
+
       if (empty($Activities))
          return;
 
@@ -178,7 +179,7 @@ function vf_widgets_init() {
 			$i++;
 			if ($i > $count)
 				break;
-         
+
 			echo '<li>'.vf_format_activity($Activity, $link_url).'</li>';
 		}
 		echo '</ul>';
@@ -204,7 +205,7 @@ function vf_widgets_init() {
 
 		// Be sure you format your options to be valid HTML attributes.
 		$title = htmlspecialchars($title, ENT_QUOTES);
-		
+
 		// TODO: Retrieve & build the role dropdown. At time of this writing, there is no way to get the roles from Vanilla.
 		/*
 		$resturl = vf_get_value('url', $options, '');
@@ -217,7 +218,7 @@ function vf_widgets_init() {
 			}
 		}
 		*/
-		
+
 		// Here is our little form segment. Notice that we don't need a
 		// complete form. This will be embedded into the existing form.
 		echo '<p><label for="widget-activities-title">' . __('Title:') . ' <input style="width: 100%;" id="widget-activities-title" name="widget-activities-title" type="text" value="'.$title.'" /></label></p>';
@@ -225,7 +226,7 @@ function vf_widgets_init() {
 		echo '<p><label for="widget-activities-count">' . __('Number of activities to show:') . ' <input style="width: 40px;" id="widget-activities-count" name="widget-activities-count" type="text" value="'.$count.'" /></label></p>';
 		echo '<input type="hidden" id="widget-activities-submit" name="widget-activities-submit" value="1" />';
 	}
-	
+
 	// This registers our widget so it appears with the other available
 	// widgets and can be dragged and dropped into any active sidebars.
 	wp_register_sidebar_widget('vf-widget-activities', 'Vanilla Activity', 'vf_widget_activities', array('description' => 'Recent activity happening on your Vanilla Forum (eg. new users, status updates, etc).'));
@@ -245,11 +246,11 @@ function vf_widgets_init() {
 		$width = (int)vf_get_value('widget-users-iconwidth', $options, 32);
 		if ($count < 5)
 			$count = 5;
-			
+
 		$url = vf_get_value('url', $options, '');
 		$link_url = vf_get_link_url($options);
 		$resturl = array($url, '/user/summary.json');
-			
+
 		// Retrieve the latest discussions from the Vanilla API
 		$resturl = vf_combine_paths($resturl, '/');
 		$data = json_decode(vf_rest($resturl));
@@ -265,7 +266,7 @@ function vf_widgets_init() {
 			$i++;
 			if ($i > $count)
 				break;
-			
+
 			$User->IconWidth = $width;
 			echo vf_user_photo($User, $link_url).' ';
 		}
@@ -292,13 +293,13 @@ function vf_widgets_init() {
 
 		// Be sure you format your options to be valid HTML attributes.
 		$title = htmlspecialchars($title, ENT_QUOTES);
-		
+
 		echo '<p><label for="widget-users-title">' . __('Title:') . ' <input style="width: 100%;" id="widget-users-title" name="widget-users-title" type="text" value="'.$title.'" /></label></p>';
 		echo '<p><label for="widget-users-count">' . __('Number of users to show:') . ' <input style="width: 40px;" id="widget-users-count" name="widget-users-count" type="text" value="'.$count.'" /></label></p>';
 		echo '<p><label for="widget-users-iconwidth">' . __('Icon width:') . ' <input style="width: 40px;" id="widget-users-iconwidth" name="widget-users-iconwidth" type="text" value="'.$width.'" />px</label></p>';
 		echo '<input type="hidden" id="widget-users-submit" name="widget-users-submit" value="1" />';
 	}
-	
+
 	// This registers our widget so it appears with the other available
 	// widgets and can be dragged and dropped into any active sidebars.
 	wp_register_sidebar_widget('vf-widget-users', 'Vanilla Users', 'vf_widget_users', array('description' => 'Icons of recently active users in your Vanilla Forum.'));
