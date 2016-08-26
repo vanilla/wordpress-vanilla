@@ -179,7 +179,7 @@ function vf_validate_options($options) {
 function vf_validate_url($url) {
   $html = vf_rest($url);
   $formats = array(
-  	 '"WebRoot": "',     // 2.2 // BUGFIX 
+  	 '"WebRoot": "',     // 2.2 // BUGFIX
   	 '"WebRoot":"',     // 2.2
   	 '\'WebRoot\' : "', // 2.0.18.13+ and 2.1.1+
   	 'WebRoot" value="' // legacy
@@ -351,12 +351,9 @@ function vf_get_user() {
       $user['photourl'] = ''; //
       $user['wp_nonce'] = wp_create_nonce('log-out');
 
-      // Do some fudgery to grab the photo url.
-      try {
-         $avatar = new SimpleXMLElement(get_avatar($current_user->ID));
-         if (isset($avatar['src']))
-            $user['photourl'] = (string)$avatar['src'];
-      } catch (Exception $Ex) {
+      $avatarUrl = get_avatar_url($current_user->ID);
+      if ($avatarUrl) {
+         $user['photourl'] = $avatarUrl;
       }
 
       // Add the user's roles to the SSO.
