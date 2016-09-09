@@ -3,6 +3,10 @@
  * Functions related to general administration of this plugin: defining the
  * forum url, creating a new forum, forum administration, etc.
  */
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
 
 // Perform url validation?
 if (is_array($_GET)) {
@@ -171,6 +175,7 @@ function vf_sso_admin_page() {
   
 	$options = get_option(VF_OPTIONS_NAME);
 	$sso_enabled = vf_get_value('sso-enabled', $options, '');
+	$sso_create_users_on_register=vf_get_value('sso-create-users-on-register',$options,'');
 	$sso_clientid = vf_get_value('sso-clientid', $options, vf_format_url(get_option('blogname')));
 	$sso_secret = vf_get_value('sso-secret', $options, '');
 	$vanilla_url = vf_get_value('url', $options);
@@ -249,8 +254,13 @@ jQuery(document).ready(function($) {
 	<div class="form-container">
 		<label>
 			<strong>Enable</strong>
-			<input type="checkbox" name="<?php echo vf_get_option_name('sso-enabled'); ?>" value="1"<?php echo $sso_enabled == '1' ? ' checked="checked"' : ''; ?> />
+			<input type="checkbox" name="<?php echo vf_get_option_name('sso-enabled'); ?>" value="1" <?php echo $sso_enabled == '1' ? ' checked="checked"' : ''; ?> />
 			Allow users to sign into Vanilla through WordPress.
+		</label>
+		<label>
+			<strong>Enable creating user in vanilla on Wordpress user creation</strong>
+			<input type="checkbox" name="<?php echo vf_get_option_name('sso-create-users-on-register');  ?>" <?php echo $sso_create_users_on_register == 'on' ? ' checked="checked"' : ''; ?> />
+			Create vanilla forum user immediatelly after wordpress user registration
 		</label>
 
 		<label>
@@ -280,6 +290,11 @@ jQuery(document).ready(function($) {
 			<strong>Register Url</strong>
 			<div class="CopyBox"><?php echo site_url('wp-login.php?action=register', 'login'); ?></div>
 		</label>
+		<label>
+			<strong>SignOut Url</strong>
+			<div class="CopyBox"><?php
+						echo add_query_arg(array('action' => 'logout', '_wpnonce' => '{Nonce}', 'redirect_to' => '{Redirect}'), site_url('wp-login.php', 'login')); ?></div>
+		</label>
 	</div>
 
 	<p class="important">Make sure that <u>all</u> of the values above are copied into <a href="<?php echo vf_combine_paths(array($vanilla_url, 'dashboard/settings/jsconnect')); ?>">your Vanilla jsConnect settings page</a>.</p>
@@ -287,13 +302,6 @@ jQuery(document).ready(function($) {
    <p class="submit"><input type="submit" name="save" value="<?php _e('Save Changes'); ?>" /></p>
 	</form>
 </div>
-<?php
-/*
- May need this value in the future...
-			<th>Sign-out Url</th>
-			<td><span class="description"><?php
-				echo add_query_arg(array('action' => 'logout', '_wpnonce' => '{Nonce}', 'redirect_to' => '{Redirect}'), site_url('wp-login.php', 'login'));
-			?></span></td>
-*/
 
+<?php
 }

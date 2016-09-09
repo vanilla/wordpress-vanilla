@@ -125,6 +125,7 @@ function vf_close_form() {
  * the inputs accordingly. This is a catch-all validation for all forms.
  */
 function vf_validate_options($options) {
+	
 	$formname = vf_get_value('form-name', $options);
 	$alloptions = get_option(VF_OPTIONS_NAME);
 	if (!is_array($alloptions))
@@ -166,8 +167,10 @@ function vf_validate_options($options) {
          $options['embed-matchcategories'] = $matchCategories;
 			break;
 		default:
+
 			$options = array_merge($alloptions, $options);
 			break;
+		
 	}
 
 	return $options;
@@ -177,6 +180,7 @@ function vf_validate_options($options) {
  * Validate that the provided url is a vanilla forum root. Returns properly formatted url if it is, or FALSE.
  */
 function vf_validate_url($url) {
+	
   $html = vf_rest($url);
   $formats = array(
   	 '"WebRoot": "',     // 2.2 // BUGFIX
@@ -192,7 +196,7 @@ function vf_validate_url($url) {
     }
   }
 
-  return FALSE;
+  return false;
 }
 
 /**
@@ -336,35 +340,53 @@ function vf_get_link_url($options) {
 	return $url;
 }
 
-function vf_get_user() {
-   global $current_user, $wp_roles;
+function vf_get_user($user_id=0) {
+	$cur_user=null; 
+	$cur_roles=null;
 
-   if (!function_exists('get_currentuserinfo'))
-      require_once ABSPATH . WPINC . '/pluggable.php';
-   get_currentuserinfo();
+	if($user_id>0){
+	$cur_user=new WP_User($user_id);
+	}else{
+		global $current_user, $wp_roles;
+		if (!function_exists('get_currentuserinfo'))
+			require_once ABSPATH . WPINC . '/pluggable.php';
+		get_currentuserinfo();
+		$cur_user=$current_user;
+	}
 
    $user = array();
-   if ($current_user->ID != '') {
-      $user['uniqueid'] = $current_user->ID;
-      $user['name'] = $current_user->display_name;
-      $user['email'] = $current_user->user_email;
+   if ($cur_user instanceof WP_User) {
+      $user['uniqueid'] = $cur_user->ID;
+      $user['name'] = $cur_user->display_name;
+      $user['email'] = $cur_user->user_email;
       $user['photourl'] = ''; //
       $user['wp_nonce'] = wp_create_nonce('log-out');
 
-      $avatarUrl = get_avatar_url($current_user->ID);
-      if ($avatarUrl) {
-         $user['photourl'] = $avatarUrl;
-      }
 
+      // Do some fudgery to grab the photo url.
+	   set_error_handler(function(){});
+      try {
+         $avatar = new SimpleXMLElement(get_avatar($cur_user->ID));
+         if (isset($avatar['src']))
+            $user['photourl'] = (string)$avatar['src'];
+      } catch (Exception $Ex) {
+
+		$avatarUrl = get_avatar_url($cur_user->ID);
+		if ($avatarUrl) {
+			$user['photourl'] = $avatarUrl;
+
+		}
+	  }
+		restore_error_handler();
       // Add the user's roles to the SSO.
-      if (isset($current_user->roles)) {
+      if (isset($cur_user->roles)) {
          if (!isset( $wp_roles ) )
             $wp_roles = new WP_Roles();
 
          $role_names = $wp_roles->role_names;
 
          $roles = array();
-         foreach ((array)$current_user->roles as $role_slug) {
+         foreach ((array)$cur_user->roles as $role_slug) {
             // Add the role slug.
             $roles[] = $role_slug;
 
@@ -381,7 +403,7 @@ function vf_get_user() {
       } else {
          $user['roles'] = null;
       }
-//      $user['_user'] = $current_user;
+//      $user['_user'] = $cur_user;
    }
 
    // Allow other plugins to modify the user.
@@ -390,8 +412,8 @@ function vf_get_user() {
    return $user;
 }
 
-function vf_get_sso_string() {
-   $user = vf_get_user();
+function vf_get_sso_string($user_id=0) {
+   $user = vf_get_user($user_id);
 
    if (empty($user))
       return '';

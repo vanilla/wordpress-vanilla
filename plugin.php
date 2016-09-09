@@ -73,6 +73,9 @@ The Vanilla Forums plugin is distributed in the hope that it will be useful, but
 You should have received a copy of the GNU General Public License along with the Vanilla Forums plugin.  If not, see <http://www.gnu.org/licenses/>.
 Contact Vanilla Forums Inc at support [at] vanillaforums [dot] com
 */
+//if ( ! defined( 'ABSPATH' ) ) {
+//    exit; // Exit if accessed directly.
+//}
 
 define('VF_OPTIONS_NAME', 'vf-options');
 define('VF_PLUGIN_PATH', dirname(__FILE__));
@@ -84,3 +87,4 @@ include_once(VF_PLUGIN_PATH.'/embed.php');
 include_once(VF_PLUGIN_PATH.'/widgets.php');
 //include_once(VF_PLUGIN_PATH.'/sso.php');
 include_once(VF_PLUGIN_PATH.'/hooks.php');
+include_once(VF_PLUGIN_PATH.'/force-user-sync.php');
