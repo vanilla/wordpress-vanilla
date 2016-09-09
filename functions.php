@@ -1,8 +1,4 @@
 <?php
-//if ( ! defined( 'ABSPATH' ) ) {
-//	exit; // Exit if accessed directly.
-//}
-
 /**
  * Utility & hook functions.
  */
@@ -67,7 +63,7 @@ function vf_get_value($Key, &$Collection, $Default = FALSE) {
  *
  * @param string $Url The url to make a REST request to.
  */
-function 	vf_rest($Url) {
+function vf_rest($Url) {
 	$Response = wp_remote_get($Url);
 	if (is_wp_error($Response))
 		return $Response->get_error_message();
@@ -129,8 +125,7 @@ function vf_close_form() {
  * the inputs accordingly. This is a catch-all validation for all forms.
  */
 function vf_validate_options($options) {
-	// make it disabled if unchecked - fix
-	if(!isset($options['sso-create-users-on-register'])){$options['sso-create-users-on-register']='';}
+	
 	$formname = vf_get_value('form-name', $options);
 	$alloptions = get_option(VF_OPTIONS_NAME);
 	if (!is_array($alloptions))
@@ -171,11 +166,11 @@ function vf_validate_options($options) {
 			$options['embed-categoryid'] = $embed_categoryid;
          $options['embed-matchcategories'] = $matchCategories;
 			break;
-		default:{
+		default:
 
 			$options = array_merge($alloptions, $options);
 			break;
-		}
+		
 	}
 
 	return $options;
@@ -197,11 +192,11 @@ function vf_validate_url($url) {
   foreach ($formats as $format) {
   	 if ($chars = strpos($html, $format)) {
   	   $offset = $chars + strlen(stripslashes($format));
-    	$result=vf_parse_webroot($html, $offset);
+    	return vf_parse_webroot($html, $offset);
     }
   }
 
-  return $result;
+  return false;
 }
 
 /**

@@ -44,7 +44,7 @@ function vf_send_user_data_to_vanilla($user_id){
         'sso'=>$sso_string
     );
 
-    $user_url=$base_vanilla_url.'entry/jsconnect?'.http_build_query($data);
+    $user_url=$base_vanilla_url.'entry/jsconnect/?'.http_build_query($data);
     $result=wp_remote_get($user_url);
     return $result;
 }

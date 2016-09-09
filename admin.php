@@ -118,7 +118,7 @@ jQuery(document).ready( function($) {
 		$.ajax({
 		  url: '<?php echo site_url('wp-admin/admin.php?page=vf-admin-handle&vanillavalidate='); ?>'+validateUrl,
 		  success: function(data) {
-			 if (data.indexOf('http://') == 0 ||data.indexOf('https://') == 0) {
+			 if (data.indexOf('http://') == 0 || data.indexOf('https://') == 0) {
 				$('input.InputBox').val(data);
 				$('.Validated').show();
 			 } else {
@@ -177,7 +177,8 @@ function vf_sso_admin_page() {
 	$sso_enabled = vf_get_value('sso-enabled', $options, '');
 	$sso_create_users_on_register=vf_get_value('sso-create-users-on-register',$options,'');
 	$sso_clientid = vf_get_value('sso-clientid', $options, vf_format_url(get_option('blogname')));
-	$sso_secret = vf_get_value('sso-secret', $options, '');$vanilla_url = vf_get_value('url', $options);
+	$sso_secret = vf_get_value('sso-secret', $options, '');
+	$vanilla_url = vf_get_value('url', $options);
 ?>
 <style type="text/css">
 .wrap strong {
@@ -303,11 +304,4 @@ jQuery(document).ready(function($) {
 </div>
 
 <?php
-
-//			<th>Sign-out Url</th>
-//			<td><span class="description"><?php
-//				echo add_query_arg(array('action' => 'logout', '_wpnonce' => '{Nonce}', 'redirect_to' => '{Redirect}'), site_url('wp-login.php', 'login'));
-//			<!--</span></td>-->
-
-
 }
