@@ -183,8 +183,8 @@ function vf_validate_url($url) {
 	
   $html = vf_rest($url);
   $formats = array(
-  	 '"WebRoot": "',     // 2.2 BUGFIX
-	 '"WebRoot":"',     // 2.2
+  	 '"WebRoot": "',     // 2.2 // BUGFIX
+  	 '"WebRoot":"',     // 2.2
   	 '\'WebRoot\' : "', // 2.0.18.13+ and 2.1.1+
   	 'WebRoot" value="' // legacy
   );
@@ -355,12 +355,13 @@ function vf_get_user($user_id=0) {
 	}
 
    $user = array();
-   if ($cur_user->ID != '') {
+   if ($cur_user instanceof WP_User) {
       $user['uniqueid'] = $cur_user->ID;
       $user['name'] = $cur_user->display_name;
       $user['email'] = $cur_user->user_email;
       $user['photourl'] = ''; //
       $user['wp_nonce'] = wp_create_nonce('log-out');
+
 
       // Do some fudgery to grab the photo url.
 	   set_error_handler(function(){});
@@ -369,7 +370,13 @@ function vf_get_user($user_id=0) {
          if (isset($avatar['src']))
             $user['photourl'] = (string)$avatar['src'];
       } catch (Exception $Ex) {
-      }
+
+		$avatarUrl = get_avatar_url($cur_user->ID);
+		if ($avatarUrl) {
+			$user['photourl'] = $avatarUrl;
+
+		}
+	  }
 		restore_error_handler();
       // Add the user's roles to the SSO.
       if (isset($cur_user->roles)) {

@@ -2,8 +2,8 @@
 /*
 Plugin Name: Vanilla Forums
 Plugin URI: http://vanillaforums.org/addons/
-Description: Integrates Vanilla Forums with Wordpress: embedded blog comments, embedded forum, single sign on, and Wordpress widgets.
-Version: 1.1.16
+Description: Integrates Vanilla Forums with WordPress: embedded blog comments, embedded forum, single sign on, and WordPress widgets.
+Version: 1.1.17
 Author: Todd Burry
 Author URI: http://www.vanillaforums.org/
 
@@ -38,7 +38,7 @@ ChangeLog:
 - Fixed bad reference to transparent.png that caused a broken image in the dashboard menu.
 - Fixed a bug that caused the forum url input to fill with garbage when the input is blank or an incorrect url is used.
 1.1.5
-- Added fix so that the forum's domain is on the trusted domain whitelist in wordpress and redirects will function properly between wordpress and vanilla.
+- Added fix so that the forum's domain is on the trusted domain whitelist in WordPress and redirects will function properly between wordpress and vanilla.
 1.1.6
 - Incorrect version saved before push.
 1.1.7
@@ -50,7 +50,7 @@ ChangeLog:
 1.1.10
 - Fixed sso admin page.
 1.1.11
-- Added the ability to match categories with Wordpress.
+- Added the ability to match categories with WordPress.
 1.1.12
 - Fixed typo where {Redirect} should have been {Target}.
 1.1.13
@@ -60,9 +60,13 @@ ChangeLog:
 1.1.15
 - Added the full role names to the list of roles sent on sso.
 1.1.16
-- Fixed webroot parsing in url vaidation function
+- Fixed webroot parsing in url validation function.
+1.1.17
+- Added link to video and version.
+- Fixed webroot parsing.
+- Fixed Vanilla URL endpoints to not use 'p' parameter.
 
-Copyright 2010 Vanilla Forums Inc
+Copyright 2010-2016 Vanilla Forums Inc
 This file is part of the Vanilla Forums plugin for WordPress.
 The Vanilla Forums plugin is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 The Vanilla Forums plugin is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
