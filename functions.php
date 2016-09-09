@@ -180,7 +180,7 @@ function vf_validate_options($options) {
  * Validate that the provided url is a vanilla forum root. Returns properly formatted url if it is, or FALSE.
  */
 function vf_validate_url($url) {
-	$result=false;
+	
   $html = vf_rest($url);
   $formats = array(
   	 '"WebRoot": "',     // 2.2 BUGFIX
