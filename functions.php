@@ -465,3 +465,22 @@ function vf_allowed_redirect_hosts($allowed_hosts, $lp) {
 
 	return $allowed_hosts;
 }
+
+function vf_flatten_category_tree($categoryTree) {
+    $recursiveFlattenner = function(array $category, array &$result) use (&$recursiveFlattenner) {
+        $result[] = $category;
+        if (empty($category['Children'])) {
+            return;
+        }
+        foreach ($category['Children'] as $child) {
+            $recursiveFlattenner($child, $result);
+        }
+    };
+
+    $result = [];
+
+    foreach ($categoryTree as $category) {
+        $recursiveFlattenner($category, $result);
+    }
+    return $result;
+}

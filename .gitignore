@@ -1,0 +1,14 @@
+*.kpf
+.DS_Store
+Thumbs.db
+*.swp
+_notes
+*/_archive/*
+~*
+.project
+.settings
+.buildpath
+.idea/*
+/nbproject/private/
+nbproject/project.properties
+nbproject/project.xml
