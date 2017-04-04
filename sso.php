@@ -21,7 +21,7 @@ switch ($VFRequest) {
 		break;
 	// Generate a secret to be used for security.
 	case 'generate-secret':
-		echo md5(time());
+		echo wp_generate_password(64, true, true);
 		exit();
 		break;
 }
