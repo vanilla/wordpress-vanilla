@@ -71,7 +71,7 @@ Vanilla provides an integrated comment and forum community that will increase yo
 
 We don’t have all the features that stand alone commenting systems have but we are working on many that we see as important such as pre-moderation, integration into blogging software dashboards and automated imports of legacy comments.   
 
-= Q. Can use this with Vanilla Forums self-hosted? =
+= Q. Can I use this with Vanilla Forums self-hosted? =
 Yes, you can use this with your self-hosted Vanilla Forums install.
 
 = Q. Can I see some examples of Vanilla Comment implementations? =
