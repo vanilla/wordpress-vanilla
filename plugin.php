@@ -66,7 +66,7 @@ ChangeLog:
 - Fixed webroot parsing.
 - Fixed Vanilla URL endpoints to not use 'p' parameter.
 1.1.18
-- Incremented version to include category dropdown fix that was skipped in the previous version.check in = all.
+- Update handling of /categories/all.json
 
 Copyright 2010-2016 Vanilla Forums Inc
 This file is part of the Vanilla Forums plugin for WordPress.
