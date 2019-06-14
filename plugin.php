@@ -1,11 +1,11 @@
 <?php
 /*
 Plugin Name: Vanilla Forums
-Plugin URI: http://vanillaforums.org/addons/
+Plugin URI: https://vanillaforums.com
 Description: Integrates Vanilla Forums with WordPress: embedded blog comments, embedded forum, single sign on, and WordPress widgets.
-Version: 1.1.18
-Author: Todd Burry
-Author URI: http://www.vanillaforums.org/
+Version: 1.2
+Author: Vanilla Forums
+Author URI: https://vanillaforums.com
 
 ChangeLog:
 1.0.4
@@ -67,6 +67,8 @@ ChangeLog:
 - Fixed Vanilla URL endpoints to not use 'p' parameter.
 1.1.18
 - Update handling of /categories/all.json
+1.2
+- Update jsConnect client library
 
 Copyright 2010-2016 Vanilla Forums Inc
 This file is part of the Vanilla Forums plugin for WordPress.
