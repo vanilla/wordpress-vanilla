@@ -80,12 +80,14 @@ function writeJsConnect($user, $request, $clientID, $secret, $secure = true) {
     }
 
     $json = json_encode($result);
+    if (!headers_sent()) {
+        $contentType = jsConnectContentType($request);
+        header($contentType, true);
+    }
 
     if (isset($request['callback'])) {
-        safeHeader('Content-Type: application/javascript; charset=utf-8', true);
         echo "{$request['callback']}($json)";
     } else {
-        safeHeader('Content-Type: application/json; charset=utf-8', true);
         echo $json;
     }
 }
@@ -173,4 +175,16 @@ function jsSSOString($user, $clientID, $secret) {
 
     $result = "$string $hash $timestamp hmacsha1";
     return $result;
+}
+
+/**
+ * Based on a jsConnect request, determine the proper response content type.
+ *
+ * @param array $request
+ * @return string
+ */
+function jsConnectContentType(array $request) {
+    $isJsonp = isset($request["callback"]);
+    $contentType = $isJsonp ? "Content-Type: application/javascript; charset=utf-8" : "Content-Type: application/json; charset=utf-8";
+    return $contentType;
 }
