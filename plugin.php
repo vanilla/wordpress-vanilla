@@ -69,8 +69,10 @@ ChangeLog:
 - Update handling of /categories/all.json
 1.2
 - Update jsConnect client library
+1.2.1
+- Pass `PHP_QUERY_RFC1738` as `enc_type` argument to `http_build_query()` when building the JSConnect response.
 
-Copyright 2010-2016 Vanilla Forums Inc
+Copyright 2010-2019 Vanilla Forums Inc
 This file is part of the Vanilla Forums plugin for WordPress.
 The Vanilla Forums plugin is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 The Vanilla Forums plugin is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
