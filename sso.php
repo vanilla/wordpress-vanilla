@@ -4,15 +4,11 @@ use Vanilla\JsConnect;
 /**
  * Single Sign-on functions.
  */
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL|E_STRICT);
 
 /**
  * Check to see if we should kill processing and display information for Vanilla
  */
 $VFRequest = vf_get_value('VFRequest', $_GET);
-
 switch ($VFRequest) {
     // Show the signed in user
     case 'connect':
