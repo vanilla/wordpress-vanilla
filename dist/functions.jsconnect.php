@@ -1098,28 +1098,29 @@ class SignatureInvalidException extends \UnexpectedValueException
  * @license MIT
  */
 
-use Vanilla\JsConnect\JsConnectJSONP;
+namespace JsConnectJSONP {
 
-function writeJsConnect($user, $request, $clientID, $secret, $secure = true) {
-    JsConnectJSONP::writeJsConnect($user, $request, $clientID, $secret, $secure);
-}
+    function writeJsConnect($user, $request, $clientID, $secret, $secure = true) {
+        JsConnectJSONP::writeJsConnect($user, $request, $clientID, $secret, $secure);
+    }
 
-function signJsConnect($data, $clientID, $secret, $hashType, $returnData = false) {
-    return JsConnectJSONP::signJsConnect($data, $clientID, $secret, $hashType, $returnData);
-}
+    function signJsConnect($data, $clientID, $secret, $hashType, $returnData = false) {
+        return JsConnectJSONP::signJsConnect($data, $clientID, $secret, $hashType, $returnData);
+    }
 
-function jsHash($string, $secure = true) {
-    return JsConnectJSONP::hash($string, $secure);
-}
+    function jsHash($string, $secure = true) {
+        return JsConnectJSONP::hash($string, $secure);
+    }
 
-function jsTimestamp() {
-    return JsConnectJSONP::timestamp();
-}
+    function jsTimestamp() {
+        return JsConnectJSONP::timestamp();
+    }
 
-function jsSSOString($user, $clientID, $secret) {
-    return JsConnectJSONP::ssoString($user, $clientID, $secret);
-}
+    function jsSSOString($user, $clientID, $secret) {
+        return JsConnectJSONP::ssoString($user, $clientID, $secret);
+    }
 
-function jsConnectContentType(array $request): string {
-    return JsConnectJSONP::contentType($request);
+    function jsConnectContentType(array $request): string {
+        return JsConnectJSONP::contentType($request);
+    }
 }
