@@ -339,11 +339,13 @@ function vf_get_link_url($options) {
 function vf_get_user() {
    global $current_user, $wp_roles;
 
-   if (!function_exists('get_currentuserinfo')) {
-      require_once ABSPATH . WPINC . '/pluggable.php';
-      get_currentuserinfo();
-   } else {
+   if (function_exists('wp_get_current_user')) {
        wp_get_current_user();
+   } else {
+       if (!function_exists('get_currentuserinfo')) {
+           require_once ABSPATH . WPINC . '/pluggable.php';
+       }
+       get_currentuserinfo();
    }
 
    $user = array();
