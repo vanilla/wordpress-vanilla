@@ -152,7 +152,7 @@ jQuery(document).ready( function($) {
 		<span class="Progress">...</span>
 		<span class="Validated">Validated :)</span>
 		<span class="Invalid">Couldn't find a Vanilla Forum at this url :/</span>
-		<em>eg. http://yourdomain.com/forum</em>
+		<em>eg. https://yourdomain.com/forum</em>
       <p class="submit">
 		  <input type="submit" class="Validate" name="validate" value="<?php _e('Re-validate'); ?>" />
 		  <input type="submit" class="Save" name="save" value="<?php _e('Save'); ?>" />
