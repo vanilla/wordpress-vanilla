@@ -3,7 +3,7 @@
 Plugin Name: Vanilla Forums
 Plugin URI: https://vanillaforums.com
 Description: Integrates Vanilla Forums with WordPress: embedded blog comments, embedded forum, single sign on, and WordPress widgets.
-Version: 1.2.2
+Version: 1.3.0
 Author: Vanilla Forums
 Author URI: https://vanillaforums.com
 
