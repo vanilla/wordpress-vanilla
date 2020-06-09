@@ -73,6 +73,8 @@ ChangeLog:
 - Pass `PHP_QUERY_RFC1738` as `enc_type` argument to `http_build_query()` when building the JSConnect response.
 1.2.2
 - Bumping up the version, for Thanksgiving.
+1.3.0
+- Upgrading JSConnect V3
 
 Copyright 2010-2019 Vanilla Forums Inc
 This file is part of the Vanilla Forums plugin for WordPress.
